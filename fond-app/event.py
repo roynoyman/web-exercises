@@ -36,7 +36,7 @@ class EventType(str, Enum):
 @dataclass
 class Event:
     _id: int
-    type: str
+    e_type: str
 
     @staticmethod
     def from_request(config):

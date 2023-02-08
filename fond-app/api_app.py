@@ -25,6 +25,7 @@ def stopServer():
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
 
+# Cashbacks
 @app.route('/cashbacks/', methods=(["GET"]))
 def get_cashback():
     try:
@@ -52,6 +53,7 @@ def get_chasback_id(cashback_id):
     return jsonify(f" Good: {cashback_id} is: {cashback_spec}"), 200
 
 
+# Events
 @app.route('/event/', methods=(["POST"]))
 def post_event_processor():
     try:
