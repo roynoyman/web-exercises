@@ -1,6 +1,5 @@
 import datetime
 from dataclasses import dataclass, asdict
-from enum import Enum
 
 
 @dataclass
@@ -19,7 +18,7 @@ class Cashback:
                         config['merchant_name'],
                         config['customer_name'],
                         config['customer_email'],
-                        str(datetime.time.hour)
+                        str(datetime.date.today())
                         )
 
     def asdict(self):
