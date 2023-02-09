@@ -1,14 +1,13 @@
-import logging
 import os
 import signal
 
-from flask import Flask, jsonify, request
-from pymongo.errors import DuplicateKeyError
+from flask import Flask, jsonify
 
 from cashback import Cashback
 from db_utils import insert_cashback_to_db
 from validations import get_args_from_req, validate_screen, validate_balance, validate_cb_id_already_exist, \
     release_balance
+from pymongo.errors import DuplicateKeyError
 
 app = Flask(__name__)
 
@@ -39,8 +38,11 @@ def post_cashback():
         validate_cb_id_already_exist(new_cashback._id)
         validate_screen(new_cashback.customer_name)
         insert_cashback_to_db(new_cashback.asdict())
-    except ValueError as e:
+    except Exception as e:
         released = release_balance(new_cashback._id)
-        return jsonify(f"{e}, balance released={released}"), 403
+        if type(e) == ValueError:
+            return jsonify(f"{e}, balance released={released}"), 403
+        if type(e) == DuplicateKeyError:
+            return jsonify(f"cashback_id: {new_cashback._id} already exist in db"), 400
     # send_email_on_success(new_cashback._id)
     return jsonify(f"cashback posted, id: {new_cashback._id}"), 200
