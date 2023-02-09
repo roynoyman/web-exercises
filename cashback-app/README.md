@@ -48,5 +48,12 @@ Returns:
 </details>
 
 
-***Used `_id` although it means this is a protected attribute. just to make db functionality easier. Can easily (and
+
+
+####Notes:
+1. Didnt check that params themselves are valid except of their type. for example: user can pass goodId with goodName but with badEmail@gmail.com
+
+2. Used `_id` although it means this is a protected attribute. just to make db functionality easier. Can easily (and
 should) be changed. 
+   
+3. Must add more tests.
