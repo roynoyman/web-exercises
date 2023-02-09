@@ -31,8 +31,6 @@ def post_cashback():
         new_cashback = Cashback.from_request(args)
     except TypeError as e:
         return jsonify(f"missing args, follow api guidelines \n {e}"), 400
-    except Exception as e:
-        return jsonify(f"{e}"), 405
     try:
         validate_balance(new_cashback)
     except ValueError as e:
@@ -44,5 +42,5 @@ def post_cashback():
     except ValueError as e:
         released = release_balance(new_cashback._id)
         return jsonify(f"{e}, balance released={released}"), 403
-    send_email_on_success(new_cashback._id)
+    # send_email_on_success(new_cashback._id)
     return jsonify(f"cashback posted, id: {new_cashback._id}"), 200
