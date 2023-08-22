@@ -57,7 +57,6 @@ class WebServerBooks(FakeWebServer):
         try:
             args = get_args_from_req()
             validate_book_args(args)
-            print("args are:", args)
             self.database.update_one(book_id, args)
         except ItemNotExist as e:
             return f"error: {e}", 404

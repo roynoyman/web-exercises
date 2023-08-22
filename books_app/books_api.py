@@ -66,7 +66,6 @@ def update_book_by_id(book_id):
     try:
         args = get_args_from_req()
         validate_book_args(args)
-        print("args are:", args)
         database.update_one(book_id, args)
     except ItemNotExist as e:
         return f"error: {e}", 404

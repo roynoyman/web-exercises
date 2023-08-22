@@ -18,6 +18,9 @@ class DataBase:
     def delete_one(self, book_id) -> Book:
         pass
 
+    def delete_all(self) -> None:
+        pass
+
 
 class DictDataBase(DataBase):
     database: dict
@@ -35,7 +38,6 @@ class DictDataBase(DataBase):
         return list(self.database.values())
 
     def insert_one(self, book: Book) -> None:
-        print(f"{book.book_id}: book.book_id")
         self.database[book.book_id] = book
 
     def update_one(self, book_id, key_value_update_fields: dict):
@@ -49,7 +51,7 @@ class DictDataBase(DataBase):
     def delete_one(self, book_id):
         try:
             removed_book = self.database.pop(book_id)
-        except KeyError():
+        except KeyError:
             raise ItemNotExist()
         return removed_book
 

@@ -62,12 +62,33 @@ class TestBooksApi(TestCase):
         actual_updated_book = self.client.get(url).json
         self.assertEqual(actual_updated_book.get("title"), expected_title_update.get('title'))
 
+    def test_update_book_not_exist_book(self):
+        not_exist_book_id = "not-exist"
+        title_update = {"title": "some-title"}
+        url = f'{self.url}/{not_exist_book_id}'
+        resp = self.client.put(url, json=title_update)
+        self.assertEqual(resp.status_code, 404)
+        self.assertIn("Item not exist in DB", resp.text)
+
     def test_delete_book_by_id(self):
         book_to_delete = create_new_book()
         self.insert_books([book_to_delete])
         url = f'{self.url}/{book_to_delete.book_id}'
         actual_deleted = self.client.delete(url).json
         self.assertEqual(actual_deleted, asdict(book_to_delete))
+
+    def test_delete_not_exist_book(self):
+        book_to_delete = create_new_book()
+        url = f'{self.url}/{book_to_delete.book_id}'
+        actual_deleted_status_code = self.client.delete(url).status_code
+        self.assertEqual(actual_deleted_status_code, 404)
+
+    def test_delete_all(self):
+        book1 = create_new_book()
+        book2 = create_new_book()
+        self.insert_books([book1, book2])
+        actual_status_code = self.client.delete(self.url).status_code
+        self.assertEqual(actual_status_code, 204)
 
     def insert_books(self, books_list):
         url = f'{self.url}'
