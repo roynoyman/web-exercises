@@ -14,6 +14,9 @@ class TestBooksApi(TestCase):
     def setUp(self) -> None:
         self.client = app.test_client()
 
+    def tearDown(self) -> None:
+        self.client.delete(self.url)
+
     def test_get_book_by_id(self):
         new_book = create_new_book()
         self.client.post(self.url, json={"book": asdict(new_book)})
@@ -26,7 +29,6 @@ class TestBooksApi(TestCase):
         new_book = create_new_book()
         resp = self.client.post(self.url, json={"book": asdict(new_book)})
         self.assertIn("Post book success", resp.text)
-        # self.assertTrue(new_book.book_id, self.server.database.check_id_in_db(new_book.book_id))
 
     def test_get_book_by_id_item_not_exist(self):
         book_id = "some-book-id"

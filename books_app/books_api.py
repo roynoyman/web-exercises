@@ -82,3 +82,12 @@ def delete_book_by_id(book_id):
     except ItemNotExist as e:
         return f"error: {e}", 404
     return jsonify(book), 200
+
+
+@app.route('/books', methods=(["DELETE"]))
+def delete_all_books():
+    try:
+        delete_status = database.delete_all()
+    except ItemNotExist as e:
+        return f"error: {e}", 404
+    return jsonify(delete_status), 200

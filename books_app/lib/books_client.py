@@ -35,6 +35,9 @@ class BooksClient:
     def delete_book(self, book_id: str):
         return self._delete(f'books/{book_id}')
 
+    def delete_all_books(self):
+        return self._delete(f'books')
+
     @retry(exceptions=retryable_exceptions, tries=3, delay=0.1)
     def _get(self, path, params=None, timeout=(1, 10), **kwargs):
         response = get(f'{self.url}/{path}', params=params, timeout=timeout, **kwargs)

@@ -55,3 +55,7 @@ class DictDataBase(DataBase):
 
     def check_id_in_db(self, book_id):
         return True if book_id in self.database else False
+
+    def delete_all(self):
+        self.database = dict()
+        return True
