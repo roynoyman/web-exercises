@@ -58,4 +58,3 @@ class DictDataBase(DataBase):
 
     def delete_all(self):
         self.database = dict()
-        return True
