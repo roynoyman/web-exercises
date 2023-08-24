@@ -1,0 +1,33 @@
+[
+  {
+    "id": "1",
+    "title": "Sample Ticket 1",
+    "content": "This is the content of the first ticket.",
+    "userEmail": "user1@example.com",
+    "creationTime": 1679025600,
+    "labels": [
+      "bug",
+      "urgent"
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Sample Ticket 2",
+    "content": "This is the content of the second ticket.",
+    "userEmail": "user2@example.com",
+    "creationTime": 1679029800,
+    "labels": [
+      "feature"
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Sample Ticket 3",
+    "content": "This is the content of the third ticket.",
+    "userEmail": "user3@example.com",
+    "creationTime": 1679037300,
+    "labels": [
+      "question"
+    ]
+  }
+]
