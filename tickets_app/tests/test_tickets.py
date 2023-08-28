@@ -18,7 +18,7 @@ class TestTickets(unittest.TestCase):
     def setUp(self) -> None:
         self.client = app.test_client()
 
-    def test_get_all_tickets(self):
+    def test_get_tickets_no_filters(self):
         expected_tickets = expected_tickets_helper()
 
         resp = self.client.get(self.url)
@@ -29,9 +29,26 @@ class TestTickets(unittest.TestCase):
 
     def test_get_tickets_with_filter(self):
         expected_tickets = expected_tickets_helper()
+        expected_ticket_id = '1'
+        expected_ticket_tile = expected_tickets.get(expected_ticket_id).get("title")
 
-        resp = self.client.get(self.url, json={'title': 'some-tile'})
+        resp = self.client.get(self.url, json={'title': expected_ticket_tile})
         actual_tickets = resp.json
 
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(expected_tickets, actual_tickets)
+        self.assertEqual(expected_tickets.get(expected_ticket_id), actual_tickets.get(expected_ticket_id))
+        self.assertEqual(len(actual_tickets), 1)
+
+    def test_get_tickets_with_title_and_content_filters(self):
+        expected_tickets = expected_tickets_helper()
+        expected_ticket_id = '3'
+        expected_ticket_tile = expected_tickets.get(expected_ticket_id).get("title")
+        expected_ticket_content = expected_tickets.get(expected_ticket_id).get("content")
+
+        resp = self.client.get(self.url, json={'title': expected_ticket_tile, 'content': expected_ticket_content})
+        actual_tickets = resp.json
+
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(expected_tickets.get(expected_ticket_id), actual_tickets.get(expected_ticket_id))
+        self.assertEqual(expected_tickets.get('4'), actual_tickets.get('4'))
+        self.assertEqual(len(actual_tickets), 2)

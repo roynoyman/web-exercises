@@ -22,10 +22,20 @@
   },
   {
     "id": "3",
-    "title": "Sample Ticket 3",
-    "content": "This is the content of the third ticket.",
+    "title": "SAME TITLE FOR TESTING",
+    "content": "SAME CONTENT FOR TESTING",
     "userEmail": "user3@example.com",
     "creationTime": 1679037300,
+    "labels": [
+      "bug"
+    ]
+  },
+  {
+    "id": "4",
+    "title": "SAME TITLE FOR TESTING",
+    "content": "SAME CONTENT FOR TESTING",
+    "userEmail": "user4@example.com",
+    "creationTime": 1679037302,
     "labels": [
       "question"
     ]

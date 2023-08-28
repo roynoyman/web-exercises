@@ -45,21 +45,11 @@ def get_ticket_by_id(ticket_id):
     return jsonify(ticket), 200
 
 
-# # # Get All tickets
-# @app.route('/tickets', methods=(["GET"]))
-# def get_all_tickets():
-#     try:
-#         tickets = database.get_all_tickets()
-#     except Exception as e:
-#         return f"error: {e}", 500
-#     return jsonify(tickets), 200
-
-
 @app.route('/tickets', methods=(["GET"]))
 def get_tickets_with_filters():
     try:
-        filter_params = get_filter_params_from_request()
-        tickets = database.get_all_tickets(filter_params)
+        filters = get_filter_params_from_request()
+        tickets = database.get_all_tickets(filters)
     except Exception as e:
         return f"error: {e}", 500
     return jsonify(tickets), 200

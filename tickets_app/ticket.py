@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+TICKET_TEXT_ATTRIBUTES = ['title', 'content', 'userEmail']
+
 
 @dataclass
 class Ticket:

@@ -18,17 +18,17 @@ class SimpleTicketsDictDataBase(TicketsDataBase):
     def get_ticket_by_id(self, ticket_id):
         return self.db.get(ticket_id)
 
-    def get_all_tickets(self, filter_params=None) -> dict[str:Ticket]:
-        if filter_params:
-            return self._get_tickets_with_filters(filter_params)
-        return self.db
+    def get_all_tickets(self, filters=None) -> dict[str:Ticket]:
+        if not filters:
+            return self.db
+        return self._get_tickets_with_filters(filters)
 
     def insert_ticket(self, ticket_id, ticket):
         self.db[ticket_id] = ticket
 
-    def _get_tickets_with_filters(self, filter_params):
+    def _get_tickets_with_filters(self, filters):
         tickets = {}
-        for key, ticket in self.db:
-            for param, param_value in filter_params:
-                if ticket.get(param) != param_value:
-                    break
+        for key, ticket in self.db.items():
+            if all(getattr(ticket, field) == value for field, value in filters.get('text_filters').items()):
+                tickets[key] = ticket
+        return tickets
