@@ -1,11 +1,12 @@
 import json
 
-from ticket import Ticket
+from database.database import TicketsDataBase
+from database.ticket import Ticket
 
 
-def insert_tickets_to_db(tickets_data, database):
-    for entry in tickets_data:
-        ticket = Ticket(**entry)
+def insert_tickets_to_db(tickets_data, database: TicketsDataBase):
+    for ticket_data in tickets_data:
+        ticket = Ticket(**ticket_data)
         database.insert_ticket(ticket.id, ticket)
 
 

@@ -5,8 +5,6 @@ from requests.exceptions import ConnectionError, Timeout, HTTPError
 from retry import retry
 from wix_legacy_logger.logger import WixLogger
 
-from exceptions import ItemNotExist
-
 
 class RetryableHTTPError(HTTPError):
     pass

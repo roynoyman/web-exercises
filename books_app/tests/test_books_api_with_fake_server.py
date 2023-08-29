@@ -1,14 +1,10 @@
-import json
 import logging
 from dataclasses import asdict
 from unittest import TestCase
 
-import requests
 from requests import HTTPError
 
 from books import create_new_book
-from exceptions import ItemNotExist
-from helpers import decode_response
 from lib.books_client import BooksClient
 from tests.web_server_tests import WebServerBooks
 

@@ -1,10 +1,10 @@
 import unittest
 from pathlib import Path
 
-from api import app
-from pre_load_data import read_data_from_file
+from api.api import app
+from data.pre_load_data import read_data_from_file
 
-actual_data_path = f'{Path(__file__).parent.parent}/data.json'
+actual_data_path = f'{Path(__file__).parent.parent}/data/data.json'
 
 
 def expected_tickets_helper():
@@ -52,3 +52,35 @@ class TestTickets(unittest.TestCase):
         self.assertEqual(expected_tickets.get(expected_ticket_id), actual_tickets.get(expected_ticket_id))
         self.assertEqual(expected_tickets.get('4'), actual_tickets.get('4'))
         self.assertEqual(len(actual_tickets), 2)
+
+    def test_get_tickets_with_full_timestamp_filter(self):
+        from_timestamp_filter = 1
+        to_timestamp_filter = 100
+        expected_ticket_id = '5'
+        expected_ticket = expected_tickets_helper().get(expected_ticket_id)
+
+        resp = self.client.get(self.url, json={'from': from_timestamp_filter, 'to': to_timestamp_filter})
+        actual_tickets = resp.json
+        self.assertEqual(actual_tickets[expected_ticket_id], expected_ticket)
+        self.assertEqual(len(actual_tickets), 1)
+
+    def test_get_tickets_with_to_timestamp_filter(self):
+        to_timestamp_filter = 100
+        expected_ticket_id = '5'
+        expected_ticket = expected_tickets_helper().get(expected_ticket_id)
+
+        resp = self.client.get(self.url, json={'to': to_timestamp_filter})
+        actual_tickets = resp.json
+        self.assertEqual(actual_tickets[expected_ticket_id], expected_ticket)
+        self.assertEqual(len(actual_tickets), 1)
+
+    def test_get_tickets_with_from_timestamp_filter(self):
+        from_timestamp_filter = 100
+        expected_missing_ticket_id = '5'
+        expected_tickets = expected_tickets_helper()
+        expected_tickets.pop(expected_missing_ticket_id)
+
+        resp = self.client.get(self.url, json={'from': from_timestamp_filter})
+        actual_tickets = resp.json
+        self.assertEqual(actual_tickets, expected_tickets)
+        self.assertEqual(len(actual_tickets), 4)
