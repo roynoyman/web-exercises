@@ -1,9 +1,13 @@
-from database.db_helpers import extract_text_filters_from_filters, extract_timestamp_filters_from_filters, is_text_filtered, \
+from abc import ABC
+
+from database.db_helpers import extract_text_filters_from_filters, extract_timestamp_filters_from_filters, \
+    is_text_filtered, \
     is_timestamp_filtered
 from database.ticket import Ticket
+from database.ticket_filter import Filter, TicketsFilter
 
 
-class TicketsDataBase:
+class TicketsDataBase(ABC):
     def get_ticket_by_id(self, ticket_id):
         pass
 
@@ -16,9 +20,11 @@ class TicketsDataBase:
 
 class SimpleTicketsDictDataBase(TicketsDataBase):
     db: dict
+    ticket_filter: Filter
 
     def __init__(self):
         self.db = dict()
+        self.ticket_filter = TicketsFilter()
 
     def get_ticket_by_id(self, ticket_id):
         return self.db.get(ticket_id)
@@ -32,16 +38,12 @@ class SimpleTicketsDictDataBase(TicketsDataBase):
         self.db[ticket_id] = ticket
 
     def _get_tickets_with_filters(self, filters):
-        text_filters = extract_text_filters_from_filters(filters)
-        timestamp_filters = extract_timestamp_filters_from_filters(filters)
+        # text_filters = extract_text_filters_from_filters(filters)
+        # timestamp_filters = extract_timestamp_filters_from_filters(filters)
         tickets = {}
         for key, ticket in self.db.items():
-            if self._is_ticket_filtered(text_filters, timestamp_filters, ticket):
+            if self.ticket_filter.is_ticket_filtered(ticket=ticket, filters=filters):
                 tickets[key] = ticket
+            # if self._is_ticket_filtered(filters, ticket):
         return tickets
 
-    @staticmethod
-    def _is_ticket_filtered(text_filters, timestamp_filters, ticket):
-        is_text_filter = is_text_filtered(text_filters, ticket) if text_filters else True
-        is_timestamp_filter = is_timestamp_filtered(timestamp_filters, ticket) if timestamp_filters else True
-        return is_text_filter and is_timestamp_filter
