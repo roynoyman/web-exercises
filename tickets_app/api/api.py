@@ -50,3 +50,4 @@ def get_tickets_with_filters():
     except Exception as e:
         return f"error: {e}", 500
     return jsonify(tickets), 200
+
